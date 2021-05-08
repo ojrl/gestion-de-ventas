@@ -1,6 +1,6 @@
 <?php
 
-class Domicilio{
+class Domicilio {
     private $iddomicilio;
     private $fk_idcliente;
     private $fk_tipo;
@@ -17,7 +17,7 @@ class Domicilio{
         return $this;
     }
 
-    public function insertar(){
+    public function insertar() {
         $mysql = new mysqli(Config::BBDD_HOST, Config::BBDD_USUARIO, Config::BBDD_CLAVE, Config::BBDD_NOMBRE);
         $mysql->query("INSERT INTO domicilios (
             fk_idcliente, 

@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 $claveEncriptada = '$2y$10$zqIdBOL2cw60q/Te1uSdu.godURopxlu.e/l7IqeiGBbmo7nmhOY6';
 
@@ -13,10 +14,8 @@ if($_POST){
   }
 }
 
-
-
-
 ?>
+
 <!DOCTYPE html>
 <html lang="es">
 

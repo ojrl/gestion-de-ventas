@@ -12,23 +12,22 @@ class Usuario {
 
     }
 
-    public function __get($atributo) {
-        return $this->$atributo;
+    public function __get($propiedad){
+        return $this->$propiedad;
     }
 
-    public function __set($atributo, $valor) {
-        $this->$atributo = $valor;
+    public function __set($propiedad, $valor){
+        $this->$propiedad = $valor;
         return $this;
     }
 
-
     public function cargarFormulario($request){
-        $this->idusuario = isset($request["id"])? $request["id"] : "";
-        $this->usuario = isset($request["txtUsuario"])? $request["txtUsuario"] : "";
-        $this->clave = isset($request["txtClave"])? $request["txtClave"] : "";
-        $this->nombre = isset($request["txtNombre"])? $request["txtNombre"] : "";
-        $this->apellido = isset($request["txtApellido"])? $request["txtApellido"]: "";
-        $this->correo = isset($request["txtCorreo"])? $request["txtCorreo"]: "";
+        $this->idusuario = isset($request["id"]) ? $request["id"] : "";
+        $this->usuario = isset($request["txtUsuario"]) ? $request["txtUsuario"] : "";
+        $this->clave = isset($request["txtClave"]) ? $request["txtClave"] : "";
+        $this->nombre = isset($request["txtNombre"]) ? $request["txtNombre"] : "";
+        $this->apellido = isset($request["txtApellido"]) ? $request["txtApellido"] : "";
+        $this->correo = isset($request["txtCorreo"]) ? $request["txtCorreo"] : "";
     }
 
     public function insertar(){
@@ -59,7 +58,6 @@ class Usuario {
     }
 
     public function actualizar(){
-
         $mysqli = new mysqli(Config::BBDD_HOST, Config::BBDD_USUARIO, Config::BBDD_CLAVE, Config::BBDD_NOMBRE);
         $sql = "UPDATE usuarios SET
                 usuario = '".$this->usuario."',
@@ -68,7 +66,6 @@ class Usuario {
                 apellido = ".$this->apellido.",
                 correo = ".$this->correo."
                 WHERE idusuario = " . $this->idusuario;
-          
         if (!$mysqli->query($sql)) {
             printf("Error en query: %s\n", $mysqli->error . " " . $sql);
         }

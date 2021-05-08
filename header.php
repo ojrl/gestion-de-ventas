@@ -27,6 +27,7 @@ if($_POST){
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
     <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -43,7 +44,6 @@ if($_POST){
   <script src="vendor/chart.js/Chart.min.js"></script>
 
   <!-- Page level custom scripts -->
-
   <link href="css/bootstrap-select.min.css" rel="stylesheet" type="text/css">
   <script type="text/javascript" src="js/bootstrap-select.min.js"></script>
   <link href="css/estilos.css" rel="stylesheet" type="text/css">
