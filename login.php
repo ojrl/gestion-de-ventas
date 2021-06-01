@@ -1,16 +1,18 @@
 <?php
 
-session_start();
-$claveEncriptada = '$2y$10$zqIdBOL2cw60q/Te1uSdu.godURopxlu.e/l7IqeiGBbmo7nmhOY6';
+include_once "config.php";
+include_once "entidades/usuario.php";
 
-if($_POST){
-  $usario = trim($_POST["txtUsuario"]);
+if($_POST) {
+  $usuario = trim($_POST["txtUsuario"]);
   $contrasena = trim($_POST["txtClave"]);
-  if($usario === "admin" && password_verify($contrasena, $claveEncriptada)){
-    $_SESSION["usuario"] = "Orlando";
+  $entidadUsuario = new Usuario();
+  $entidadUsuario->obtenerPorUsuario($usuario);
+  if(password_verify($contrasena, $entidadUsuario->clave)){
+    $_SESSION["usuario"] = $entidadUsuario->nombre;
     header("Location: index.php");
   } else {
-    $msg = "¡Credenciales Incorrectas!";
+    $mensaje = "¡Credenciales Incorrectas!";
   }
 }
 
@@ -27,9 +29,9 @@ if($_POST){
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>SB Admin 2 - Login</title>
+  <title>Sistema de Gestion de Ventas - Inicio</title>
 
-  <!-- Custom fonts for this template-->
+  <!-- Custom fonts for this template -->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
   <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 
@@ -55,16 +57,14 @@ if($_POST){
               <div class="col-lg-6">
                 <div class="p-5">
                   <div class="text-center">
-                    <h1 class="h4 text-gray-900 mb-4">Bienvenido</h1>
+                    <h1 class="h4 text-gray-900 mb-4">¡Bienvenido!</h1>
                   </div>
                   <form action="" method="POST" class="user">
-				  <?php if(isset($msg)): ?>
-				  	<div class="alert alert-danger" role="alert">
-						<?php echo $msg; ?>
-					</div>
-				  <?php endif; ?>
+                  <?php if(isset($mensaje)): ?>
+                    <div class="alert alert-danger" role="alert"><?php echo $mensaje; ?></div>
+                  <?php endif; ?>
                     <div class="form-group">
-                      <input type="text" class="form-control form-control-user" id="txtUsuario" name="txtUsuario" aria-describedby="emailHelp" placeholder="Usuario" value="ntarche">
+                      <input type="text" class="form-control form-control-user" id="txtUsuario" name="txtUsuario" aria-describedby="emailHelp" placeholder="Usuario" value="admin">
                     </div>
                     <div class="form-group">
                       <input type="password" class="form-control form-control-user" id="txtClave" name="txtClave" placeholder="Clave" value="admin123">
@@ -81,10 +81,10 @@ if($_POST){
                   </form>
                   <hr>
                   <div class="text-center">
-                    <a class="small" href="forgot-password.html">Olvidaste la clave?</a>
+                    <a class="small" href="forgot-password.html">¿Olvidaste la contraseña?</a>
                   </div>
                   <div class="text-center">
-                    <a class="small" href="register.html">Crear una cuenta!</a>
+                    <a class="small" href="usuario-formulario.php">¡Registrate!</a>
                   </div>
                 </div>
               </div>

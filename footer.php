@@ -8,10 +8,8 @@
         </div>
       </footer>
       <!-- End of Footer -->
-
     </div>
     <!-- End of Content Wrapper -->
-
   </div>
   <!-- End of Page Wrapper -->
 
@@ -21,12 +19,12 @@
   </a>
 
   <!-- Logout Modal-->
-  <form action="" method="POST">>
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <form action="" method="POST">
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Desea salir del sistema?</h5>
+            <h5 class="modal-title" id="logoutModalLabel">¿Desea salir del sistema?</h5>
             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">×</span>
             </button>
@@ -42,6 +40,7 @@
   </form>
   <script src="js/demo/chart-area-demo.js"></script>
   <script src="js/demo/chart-pie-demo.js"></script>
+
   </form>
 </body>
 

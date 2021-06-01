@@ -1,11 +1,15 @@
 <?php
-if($_POST){
-  if(isset($_POST["btnCerrar"])){
-    session_destroy();
-    header("Location: login.php");
-  }
-}
 
+if(isset($_SESSION["usuario"])) {
+  if($_POST) {
+    if(isset($_POST["btnCerrar"])) {
+      session_destroy();
+      header("Location: login.php");
+    }
+  }
+} else {
+  header("Location: login.php");
+}
 ?>
 
 <!DOCTYPE html>
@@ -19,7 +23,7 @@ if($_POST){
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title><?php echo $pg; ?></title>
+  <title><?php echo $pag; ?></title>
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -28,7 +32,7 @@ if($_POST){
   <!-- Custom styles for this template-->
   <link href="css/sb-admin-2.min.css" rel="stylesheet">
 
-    <!-- Bootstrap core JavaScript-->
+  <!-- Bootstrap core JavaScript-->
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
@@ -46,23 +50,26 @@ if($_POST){
   <!-- Page level custom scripts -->
   <link href="css/bootstrap-select.min.css" rel="stylesheet" type="text/css">
   <script type="text/javascript" src="js/bootstrap-select.min.js"></script>
-  <link href="css/estilos.css" rel="stylesheet" type="text/css">
   <script src="https://cdn.ckeditor.com/ckeditor5/18.0.0/classic/ckeditor.js"></script>
+
+  <!-- Estilos css -->
+  <link href="css/estilos.css" rel="stylesheet" type="text/css">
 
 </head>
 
 <body id="page-top">
+
 <form action="" method="POST" enctype="multipart/form-data">
 
   <!-- Page Wrapper -->
   <div id="wrapper">
 
-    <?php include_once("menu.php"); ?>
+    <?php include_once "menu.php"; ?>
 
     <!-- Content Wrapper -->
     <div id="content-wrapper" class="d-flex flex-column">
 
-      <!-- Main Content -->
+      <!-- Inicio del contenido principal -->
       <div id="content">
 
         <!-- Topbar -->
@@ -75,19 +82,17 @@ if($_POST){
 
           <!-- Topbar Search -->
           <div class="input-group">
-              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-              <div class="input-group-append">
-                <button class="btn btn-primary" type="button">
-                  <i class="fas fa-search fa-sm"></i>
-                </button>
-              </div>
+            <input type="text" class="form-control bg-light border-0 small" placeholder="Buscar..." aria-label="Search" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="button">
+                <i class="fas fa-search fa-sm"></i>
+              </button>
             </div>
-       
+          </div>
 
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
      
-
             <div class="topbar-divider d-none d-sm-block"></div>
 
             <!-- Nav Item - User Information -->

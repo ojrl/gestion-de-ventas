@@ -1,13 +1,17 @@
 <?php
+
+//Posible página adicional
+
 include_once "config.php";
 include_once "entidades/usuario.php";
 
 $usuario = new Usuario();
-$usuario->usuario = "ntarche";
+$usuario->usuario = "admin";
 $usuario->clave = $usuario->encriptarClave("admin123");
-$usuario->nombre = "Nelson Daniel";
-$usuario->apellido = "Tarche";
-$usuario->correo = "nelson.tarche@gmail.com";
+$usuario->nombre = "Orlando";
+$usuario->apellido = "Ramos";
+$usuario->correo = "ojrl93@gmail.com";
 $usuario->insertar();
 echo "Usuario insertado.";
+
 ?>

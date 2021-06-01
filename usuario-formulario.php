@@ -1,3 +1,20 @@
+<?php
+
+include_once "config.php";
+include_once "entidades/usuario.php";
+
+$usuario = new Usuario();
+if($_POST) {
+  if($_REQUEST["txtClave"] === $_REQUEST["txtVerificarClave"]) {
+    $usuario->cargarFormulario($_REQUEST);
+  } else {
+    $mensaje = "¡Las contraseñas deben ser las mismas!";
+  }
+
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -21,9 +38,7 @@
 </head>
 
 <body class="bg-gradient-primary">
-
   <div class="container">
-
     <div class="card o-hidden border-0 shadow-lg my-5">
       <div class="card-body p-0">
         <!-- Nested Row within Card Body -->
@@ -32,45 +47,49 @@
           <div class="col-lg-7">
             <div class="p-5">
               <div class="text-center">
-                <h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+                <h1 class="h4 text-gray-900 mb-4">¡Crea una cuenta!</h1>
               </div>
-              <form class="user">
+              <form action="" method="POST" class="user">
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="text" class="form-control form-control-user" id="exampleFirstName" placeholder="First Name">
+                    <input type="text" class="form-control form-control-user" id="txtNombre" name="txtNombre" placeholder="Nombre" required>
                   </div>
                   <div class="col-sm-6">
-                    <input type="text" class="form-control form-control-user" id="exampleLastName" placeholder="Last Name">
+                    <input type="text" class="form-control form-control-user" id="txtApellido" name="txtApellido" placeholder="Apellido">
                   </div>
                 </div>
                 <div class="form-group">
-                  <input type="email" class="form-control form-control-user" id="exampleInputEmail" placeholder="Email Address">
+                  <input type="txt" class="form-control form-control-user" id="txtUsuario" name="txtCorreo" placeholder="Usuario" required>
+                </div>
+                <div class="form-group">
+                  <input type="email" class="form-control form-control-user" id="txtCorreo" name="txtCorreo" placeholder="Correo" required>
                 </div>
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
-                    <input type="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
+                    <input type="password" class="form-control form-control-user" id="txtClave" name="txtClave" placeholder="Contraseña" required>
                   </div>
                   <div class="col-sm-6">
-                    <input type="password" class="form-control form-control-user" id="exampleRepeatPassword" placeholder="Repeat Password">
+                    <input type="password" class="form-control form-control-user" id="txtVerificarClave" name="txtVerificarClave" placeholder="Repetir Contraseña" required>
                   </div>
+                  <?php if(isset($mensaje)): ?>
+                    <small class="col-sm-8 offset-2 alert alert-danger mt-2 text-center" role="alert"><?php echo $mensaje; ?></small>
+                  <?php endif; ?>
                 </div>
-                <a href="login.html" class="btn btn-primary btn-user btn-block">
-                  Register Account
-                </a>
+                <button type="submit" class="btn btn-primary btn-user btn-block">Registrar cuenta</button>
                 <hr>
-                <a href="index.html" class="btn btn-google btn-user btn-block">
-                  <i class="fab fa-google fa-fw"></i> Register with Google
+                <a href="index.php" class="btn btn-google btn-user btn-block">
+                  <i class="fab fa-google fa-fw"></i> Registrarse con Google
                 </a>
-                <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                  <i class="fab fa-facebook-f fa-fw"></i> Register with Facebook
+                <a href="index.php" class="btn btn-facebook btn-user btn-block">
+                  <i class="fab fa-facebook-f fa-fw"></i> Registrarse con Facebook
                 </a>
               </form>
               <hr>
               <div class="text-center">
-                <a class="small" href="forgot-password.html">Forgot Password?</a>
+                <a class="small" href="forgot-password.html">¿Olvidaste tu contraseña?</a>
               </div>
               <div class="text-center">
-                <a class="small" href="login.html">Already have an account? Login!</a>
+                <a class="small" href="login.php">¿Ya tienes una cuenta? ¡Inicia session!</a>
               </div>
             </div>
           </div>

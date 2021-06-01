@@ -2,7 +2,7 @@
     <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.php">
         <div class="sidebar-brand-icon rotate-n-15">
           <i class="far fa-credit-card"></i>
         </div>
@@ -51,7 +51,7 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <a class="collapse-item" href="producto-formulario.php">Nuevo producto</a>
             <a class="collapse-item" href="productos.php">Listado de productos</a>
-            <a class="collapse-item" href="tipoproductos.php">Tipo de productos</a>
+            <a class="collapse-item" href="tipos_productos.php">Tipos de productos</a>
           </div>
         </div>
       </li>
@@ -82,4 +82,4 @@
       </div>
 
     </ul>
-    <!-- End of Sidebar -->
+<!-- End of Sidebar -->

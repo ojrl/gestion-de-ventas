@@ -25,7 +25,7 @@ class Cliente {
         $this->cuit = isset($request["txtCuit"]) ? $request["txtCuit"] : "";
         $this->telefono = isset($request["txtTelefono"]) ? $request["txtTelefono"] : "";
         $this->correo = isset($request["txtCorreo"]) ? $request["txtCorreo"] : "";
-        if(isset($request["txtAnioNac"]) && isset($request["txtMesNac"]) && isset($request["txtDiaNac"])){
+        if(isset($request["txtAnioNac"]) && isset($request["txtMesNac"]) && isset($request["txtDiaNac"])) {
             $this->fecha_nac = $request["txtAnioNac"] . "-" .  $request["txtMesNac"] . "-" .  $request["txtDiaNac"];
         }
     }
@@ -47,7 +47,6 @@ class Cliente {
         );";
         if($mysqli->query($sql)) {
             $this->idcliente = $mysqli->insert_id;
-            echo "<script>alert('¡Se ha registrado el cliente exitosamente!')</script>";
         } else {
             printf("Error en query: %s\n", $mysqli->error . " " . $sql);
         }
@@ -94,7 +93,6 @@ class Cliente {
         FROM clientes 
         WHERE idcliente = " . $this->idcliente;
         if($resultado = $mysqli->query($sql)) {
-            //Convierte el resultado en un array asociativo
             if($fila = $resultado->fetch_assoc()) {
                 $this->idcliente = $fila["idcliente"];
                 $this->nombre = $fila["nombre"];
@@ -120,9 +118,8 @@ class Cliente {
             correo,
             fecha_nac
 	    FROM clientes
-	    ORDER BY idcliente ASC";
+	    ORDER BY nombre ASC";
         if($resultado = $mysqli->query($sql)) {
-            //Convierte el resultado en un array asociativo
             while($fila = $resultado->fetch_assoc()) {
                 $obj = new Cliente();
                 $obj->idcliente = $fila["idcliente"];
@@ -133,6 +130,7 @@ class Cliente {
                 $obj->fecha_nac = $fila["fecha_nac"];
                 $aClientes[] = $obj;
             }
+            $mysqli->close();
             return $aClientes;
         } else {
             printf("Error en query: %s\n", $mysqli->error . " " . $sql);
