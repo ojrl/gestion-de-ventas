@@ -33,8 +33,8 @@ if($_POST) {
     }
 } 
 
-if(isset($_GET["do"]) && $_GET["do"] == "buscarLocalidad" && $_GET["id"] && $_GET["id"] > 0){
-    $idProvincia = $_GET["id"];
+if(isset($_GET["do"]) && $_GET["do"] == "buscarLocalidad" && isset($_GET["idProvincia"]) && $_GET["idProvincia"] > 0) {
+    $idProvincia = $_GET["idProvincia"];
     $localidad = new Localidad();
     $aLocalidades = $localidad->obtenerPorProvincia($idProvincia);
     echo json_encode($aLocalidades);
@@ -53,7 +53,7 @@ include_once "header.php";
                 <a href="clientes.php" class="btn btn-primary mr-2"><i class="fas fa-clipboard-list"></i> Listado</a>
                 <button type="submit" class="btn btn-success mr-2" id="btnGuardar" name="btnGuardar"><i class="fas fa-save"></i> Guardar</button>
                 <?php if(isset($_GET["id"]) && $_GET["id"] > 0): ?>
-                    <?php echo "<button type='submit' class='btn btn-danger' id='btnBorrar' name='btnBorrar'><i class='fas fa-trash-alt'></i> Borrar</button>"; ?>
+                    <button type="submit" class="btn btn-danger" id="btnBorrar" name="btnBorrar"><i class="fas fa-trash-alt"></i> Borrar</button>
                 <?php else: ?>   
                     <a href="cliente-formulario.php" class="btn btn-danger mr-2"><i class="fas fa-trash-alt"></i> Limpiar</a>
                 <?php endif;?>
@@ -124,7 +124,7 @@ include_once "header.php";
                             <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modalDomicilio">Agregar</button>
                         </div>
                     </div>
-                </div><!-- Coloque este-->
+                </div>
                 <div class="panel-body">
                     <table id="grilla" class="display" style="width:98%">
                         <thead>
@@ -166,7 +166,7 @@ include_once "header.php";
                         <div class="row">
                             <div class="col-12 form-group">
                                 <label for="lstProvincia">Provincia:</label>
-                                <select name="lstProvincia" id="lstProvincia" onchange="fBuscarLocalidad();" class="form-control">
+                                <select name="lstProvincia" id="lstProvincia" class="form-control">
                                     <option value="" disabled selected>Seleccionar</option>
                                     <?php foreach($aProvincias as $provincia): ?>
                                         <option value="<?php echo $provincia->idprovincia; ?>"><?php echo $provincia->nombre; ?></option>
@@ -209,9 +209,9 @@ include_once "header.php";
 <script>
 
 $(document).ready( function () {
-    var idCliente = '<?php echo isset($cliente) && $cliente->idcliente > 0? $cliente->idcliente : 0 ?>';
+    let idCliente = '<?php echo isset($cliente) && $cliente->idcliente > 0? $cliente->idcliente : 0 ?>';
 
-   var dataTable = $('#grilla').DataTable({
+    let dataTable = $('#grilla').DataTable({
         "processing": true,
         "serverSide": false,
         "bFilter": false,
@@ -222,45 +222,72 @@ $(document).ready( function () {
         "order": [[ 0, "asc" ]],
         "ajax": "cliente-formulario.php?do=cargarGrilla&idCliente=" + idCliente
     });
-} );
 
- function fBuscarLocalidad(){
-            idProvincia = $("#lstProvincia option:selected").val();
-            $.ajax({
-                type: "GET",
-                url: "cliente-formulario.php?do=buscarLocalidad",
-                data: { id:idProvincia },
-                async: true,
-                dataType: "json",
-                success: function (respuesta) {
-                  let opciones = "<option value='0' disabled selected>Seleccionar</option>";
-                  const resultado = respuesta.reduce(function(acumulador, valor){
-                        const {nombre,idlocalidad} = valor;
-                        return acumulador + `<option value="${idlocalidad}">${nombre}</option>`;
-                  }, opciones);
-                  $("#lstLocalidad").empty().append(resultado);
+    $('#lstProvincia').change(function() {
+        let provincia = $("#lstProvincia option:selected").val();
+        $.ajax({
+            type: "GET",
+            url: "cliente-formulario.php?do=buscarLocalidad",
+            data: { idProvincia: provincia },
+            async: true,
+            dataType: "json",
+            success: function (aResultado) {
+                $("#lstLocalidad option").remove();
+                for(let i = 0; i < aResultado.length; i++) {
+                    $("<option>", {
+                        value: aResultado[i]["idlocalidad"],
+                        text: aResultado[i]["nombre"]
+                    }).appendTo("#lstLocalidad");
                 }
-            });
-        }
+                $("#lstLocalidad").prop("selectedIndex", "-1");
+            }
+        });
+    });
 
-        function fAgregarDomicilio(){
-            var grilla = $('#grilla').DataTable();
-            grilla.row.add([
-                $("#lstTipo option:selected").text() + "<input type='hidden' name='txtTipo[]' value='"+ $("#lstTipo option:selected").val() +"'>",
-                $("#lstProvincia option:selected").text() + "<input type='hidden' name='txtProvincia[]' value='"+ $("#lstProvincia option:selected").val() +"'>",
-                $("#lstLocalidad option:selected").text() + "<input type='hidden' name='txtLocalidad[]' value='"+ $("#lstLocalidad option:selected").val() +"'>",
-                $("#txtDireccion").val() + "<input type='hidden' name='txtDomicilio[]' value='"+$("#txtDireccion").val()+"'>"
-            ]).draw();
-            $('#modalDomicilio').modal('toggle');
-            limpiarFormulario();
-        }
+/*     onchange="fBuscarLocalidad(); */
 
-        function limpiarFormulario(){
-            $("#lstTipo").val("");
-            $("#lstProvincia").val("");
-            $("#lstLocalidad").val("");
-            $("#txtDireccion").val("");
+});
+
+/* 
+function fBuscarLocalidad(){
+    idProvincia = $("#lstProvincia option:selected").val();
+    $.ajax({
+        type: "GET",
+        url: "cliente-formulario.php?do=buscarLocalidad",
+        data: { id:idProvincia },
+        async: true,
+        dataType: "json",
+        success: function (respuesta) {
+            let opciones = "<option value='0' disabled selected>Seleccionar</option>";
+            const resultado = respuesta.reduce(function(acumulador, valor){
+                const {nombre,idlocalidad} = valor;
+                return acumulador + `<option value="${idlocalidad}">${nombre}</option>`;
+            }, opciones);
+            $("#lstLocalidad").empty().append(resultado);
         }
+    });
+} 
+*/
+
+function fAgregarDomicilio(){
+    var grilla = $('#grilla').DataTable();
+    grilla.row.add([
+        $("#lstTipo option:selected").text() + "<input type='hidden' name='txtTipo[]' value='"+ $("#lstTipo option:selected").val() +"'>",
+        $("#lstProvincia option:selected").text() + "<input type='hidden' name='txtProvincia[]' value='"+ $("#lstProvincia option:selected").val() +"'>",
+        $("#lstLocalidad option:selected").text() + "<input type='hidden' name='txtLocalidad[]' value='"+ $("#lstLocalidad option:selected").val() +"'>",
+        $("#txtDireccion").val() + "<input type='hidden' name='txtDomicilio[]' value='"+$("#txtDireccion").val()+"'>"
+    ]).draw();
+    $('#modalDomicilio').modal('toggle');
+    limpiarFormulario();
+}
+
+function limpiarFormulario(){
+    $("#lstTipo").val("");
+    $("#lstProvincia").val("");
+    $("#lstLocalidad").val("");
+    $("#txtDireccion").val("");
+}
+
 </script>
 
 <?php include_once "footer.php"; ?>

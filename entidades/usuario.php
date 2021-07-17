@@ -17,13 +17,12 @@ class Usuario {
 
     public function __set($propiedad, $valor){
         $this->$propiedad = $valor;
-        return $this;
     }
 
     public function cargarFormulario($request){
         $this->idusuario = isset($request["id"]) ? $request["id"] : "";
         $this->usuario = isset($request["txtUsuario"]) ? $request["txtUsuario"] : "";
-        $this->clave = isset($request["txtClave"]) ? $request["txtClave"] : "";
+        $this->clave = isset($request["txtClave"]) ? password_hash($request["txtClave"], PASSWORD_DEFAULT) : "";
         $this->nombre = isset($request["txtNombre"]) ? $request["txtNombre"] : "";
         $this->apellido = isset($request["txtApellido"]) ? $request["txtApellido"] : "";
         $this->correo = isset($request["txtCorreo"]) ? $request["txtCorreo"] : "";
@@ -43,7 +42,7 @@ class Usuario {
             . $this->nombre . "', '"
             . $this->apellido . "', '"
             . $this->correo . "');";
-        if ($mysqli->query($sql)) {
+        if($mysqli->query($sql)) {
             $this->idusuario = $mysqli->insert_id;
         } else {
             printf("Error en query: %s\n", $mysqli->error . " " . $sql);

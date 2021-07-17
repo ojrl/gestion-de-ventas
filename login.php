@@ -75,16 +75,14 @@ if($_POST) {
                         <label class="custom-control-label" for="customCheck">Recordarme</label>
                       </div>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-user btn-block">
-                      Entrar
-                    </button>
+                    <button type="submit" class="btn btn-primary btn-user btn-block">Ingresar</button>
                   </form>
                   <hr>
                   <div class="text-center">
                     <a class="small" href="forgot-password.html">¿Olvidaste la contraseña?</a>
                   </div>
                   <div class="text-center">
-                    <a class="small" href="usuario-formulario.php">¡Registrate!</a>
+                    <a class="small" href="usuario-formulario.php">Registrarse</a>
                   </div>
                 </div>
               </div>

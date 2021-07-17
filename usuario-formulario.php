@@ -7,8 +7,10 @@ $usuario = new Usuario();
 if($_POST) {
   if($_REQUEST["txtClave"] === $_REQUEST["txtVerificarClave"]) {
     $usuario->cargarFormulario($_REQUEST);
+    $usuario->insertar();
+    $mensajeTrue = "¡Se ha registrado el usuario exitosamente, ya puedes <a href='login.php'>iniciar session!</a>";
   } else {
-    $mensaje = "¡Las contraseñas deben ser las mismas!";
+    $mensajeFalse = "¡Las contraseñas deben ser las mismas!";
   }
 
 }
@@ -59,10 +61,10 @@ if($_POST) {
                   </div>
                 </div>
                 <div class="form-group">
-                  <input type="txt" class="form-control form-control-user" id="txtUsuario" name="txtCorreo" placeholder="Usuario" required>
+                  <input type="email" class="form-control form-control-user" id="txtCorreo" name="txtCorreo" placeholder="Correo" required>
                 </div>
                 <div class="form-group">
-                  <input type="email" class="form-control form-control-user" id="txtCorreo" name="txtCorreo" placeholder="Correo" required>
+                  <input type="txt" class="form-control form-control-user" id="txtUsuario" name="txtUsuario" placeholder="Usuario" required>
                 </div>
                 <div class="form-group row">
                   <div class="col-sm-6 mb-3 mb-sm-0">
@@ -71,8 +73,11 @@ if($_POST) {
                   <div class="col-sm-6">
                     <input type="password" class="form-control form-control-user" id="txtVerificarClave" name="txtVerificarClave" placeholder="Repetir Contraseña" required>
                   </div>
-                  <?php if(isset($mensaje)): ?>
-                    <small class="col-sm-8 offset-2 alert alert-danger mt-2 text-center" role="alert"><?php echo $mensaje; ?></small>
+                  <?php if(isset($mensajeTrue)): ?>
+                    <small class="col-sm-10 offset-1 alert alert-success mt-2 text-center" role="alert"><?php echo $mensajeTrue; ?></small>
+                  <?php endif; ?>
+                  <?php if(isset($mensajeFalse)): ?>
+                    <small class="col-sm-8 offset-2 alert alert-danger mt-2 text-center" role="alert"><?php echo $mensajeFalse; ?></small>
                   <?php endif; ?>
                 </div>
                 <button type="submit" class="btn btn-primary btn-user btn-block">Registrar cuenta</button>
@@ -85,9 +90,6 @@ if($_POST) {
                 </a>
               </form>
               <hr>
-              <div class="text-center">
-                <a class="small" href="forgot-password.html">¿Olvidaste tu contraseña?</a>
-              </div>
               <div class="text-center">
                 <a class="small" href="login.php">¿Ya tienes una cuenta? ¡Inicia session!</a>
               </div>

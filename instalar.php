@@ -1,7 +1,6 @@
 <?php
 
 //Posible página adicional
-
 include_once "config.php";
 include_once "entidades/usuario.php";
 

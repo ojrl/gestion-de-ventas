@@ -18,6 +18,15 @@ if(isset($_GET["id"]) && $_GET["id"] > 0) {
     $venta->obtenerPorId();
 }
 
+if(isset($_GET["do"]) && $_GET["do"] == "buscarProducto") {
+    $producto = new Producto();
+    $producto->idproducto = $_GET["idProducto"];
+    $producto->obtenerPorId();
+    $resultado["precio"] = $producto->precio;
+    echo json_encode($resultado); 
+    exit;
+}
+
 if($_POST) {
     if(isset($_POST["btnGuardar"])) {
         $venta->cargarFormulario($_REQUEST);
@@ -39,6 +48,35 @@ if($_POST) {
 include_once "header.php";
 
 ?>
+<script>
+
+window.onload = function() {
+
+    $("#lstProducto").change(function(){
+        let producto = $("#lstProducto option:selected").val();
+        $.ajax({
+            type: "GET",
+            url: "venta-formulario.php?do=buscarProducto",
+            data: { idProducto: producto },
+            async: true,
+            dataType: "json",
+            success: function (respuesta) {
+                strResultado = Intl.NumberFormat("es-AR", {style: 'currency', currency: 'ARS'}).format(respuesta.precio);
+                $("#txtPrecioMoneda").val(strResultado);
+                $("#txtPrecio").val(respuesta.precio);
+            }
+        });
+    });
+
+    document.getElementById("txtCantidad").onchange = function() {
+        let total = $("#txtPrecio").val() * $("#txtCantidad").val();
+        let totalMoneda = Intl.NumberFormat("es-AR", {style: 'currency', currency: 'ARS'}).format(total);
+        $("#txtTotalMoneda").val(totalMoneda);
+        $("#txtTotal").val(total);
+    }
+}
+
+</script>
     <!-- Inicio del container-fluid -->
     <div class="container-fluid">
         <h1 class="h3 mb-4 text-gray-800">Venta</h1>
@@ -118,16 +156,18 @@ include_once "header.php";
                 </select>
             </div>
             <div class="col-6 form-group">
-                <label for="txtPrecio">Precio unitario:</label>
-                <input type="text" id="txtPrecio" name="txtPrecio" value="<?php echo $venta->preciounitario; ?>" class="form-control" required>
+                <label for="txtPrecioMoneda">Precio unitario:</label>
+                <input type="text" id="txtPrecioMoneda" name="txtPrecioMoneda" value="<?php echo $venta->preciounitario; ?>" class="form-control" disabled>
+                <input type="text" id="txtPrecio" name="txtPrecio" value="<?php echo $venta->preciounitario; ?>" class="form-control" hidden required>
             </div>
             <div class="col-6 form-group">
                 <label for="txtCantidad">Cantidad:</label>
                 <input type="number" id="txtCantidad" name="txtCantidad" class="form-control" value="<?php echo $venta->cantidad; ?>" required>
             </div>
             <div class="col-6 form-group">
-                <label for="txtTotal">Total:</label>
-                <input type="text" id="txtTotal" name="txtTotal" value="<?php echo $venta->total; ?>" class="form-control" required>
+                <label for="txtTotalMoneda">Total:</label>
+                <input type="text" id="txtTotalMoneda" name="txtTotalMoneda" value="<?php echo $venta->total; ?>" class="form-control" disabled>
+                <input type="text" id="txtTotal" name="txtTotal" value="<?php echo $venta->total; ?>" class="form-control" hidden required>
             </div>
         </div>
         <!-- Fin del row -->
