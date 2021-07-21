@@ -2,11 +2,14 @@
 
 include_once "config.php";
 include_once "entidades/cliente.php";
+include_once "entidades/tipodomicilio.php";
 include_once "entidades/provincia.php";
 include_once "entidades/localidad.php";
 
 $pag = "Registro de cliente";
 $cliente = new Cliente();
+$tipoDomicilio = new TipoDomicilio();
+$aTiposDomicilios = $tipoDomicilio->obtenerTodos();
 $provincia = new Provincia();
 $aProvincias = $provincia->obtenerTodas();
 
@@ -27,11 +30,13 @@ if($_POST) {
         }
     } else if(isset($_POST["btnBorrar"])) {
         if(isset($_GET["id"]) && $_GET["id"] > 0) {
+            $domicilio = new Domicilio();
+            $domicilio-eliminarPorCliente($_GET["id"]);
             $cliente->eliminar();
             header("Location: clientes.php");
         }
     }
-} 
+}
 
 if(isset($_GET["do"]) && $_GET["do"] == "buscarLocalidad" && isset($_GET["idProvincia"]) && $_GET["idProvincia"] > 0) {
     $idProvincia = $_GET["idProvincia"];
@@ -157,9 +162,9 @@ include_once "header.php";
                                 <label for="lstTipo">Tipo:</label>
                                 <select name="lstTipo" id="lstTipo" class="form-control">
                                     <option value="" disabled selected>Seleccionar</option>
-                                    <option value="1">Personal</option>
-                                    <option value="2">Laboral</option>
-                                    <option value="3">Comercial</option>
+                                    <?php foreach($aTiposDomicilios as $tipoDomicilio): ?>
+                                        <option value="<?php echo $tipoDomicilio->idtipodomicilio; ?>"><?php echo $tipoDomicilio->nombre; ?></option>
+                                    <?php endforeach; ?>
                                 </select>
                             </div>
                         </div>
@@ -209,8 +214,9 @@ include_once "header.php";
 <script>
 
 $(document).ready( function () {
-    let idCliente = '<?php echo isset($cliente) && $cliente->idcliente > 0? $cliente->idcliente : 0 ?>';
-
+    let idCliente = '<?php echo isset($cliente) && $cliente->idcliente > 0 ? $cliente->idcliente : 0 ?>';
+    
+    /*
     let dataTable = $('#grilla').DataTable({
         "processing": true,
         "serverSide": false,
@@ -222,6 +228,8 @@ $(document).ready( function () {
         "order": [[ 0, "asc" ]],
         "ajax": "cliente-formulario.php?do=cargarGrilla&idCliente=" + idCliente
     });
+    */
+    
 
     $('#lstProvincia').change(function() {
         let provincia = $("#lstProvincia option:selected").val();
@@ -243,10 +251,9 @@ $(document).ready( function () {
             }
         });
     });
+});
 
 /*     onchange="fBuscarLocalidad(); */
-
-});
 
 /* 
 function fBuscarLocalidad(){
@@ -270,7 +277,7 @@ function fBuscarLocalidad(){
 */
 
 function fAgregarDomicilio(){
-    var grilla = $('#grilla').DataTable();
+    let grilla = $('#grilla').DataTable();
     grilla.row.add([
         $("#lstTipo option:selected").text() + "<input type='hidden' name='txtTipo[]' value='"+ $("#lstTipo option:selected").val() +"'>",
         $("#lstProvincia option:selected").text() + "<input type='hidden' name='txtProvincia[]' value='"+ $("#lstProvincia option:selected").val() +"'>",

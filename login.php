@@ -82,7 +82,7 @@ if($_POST) {
                     <a class="small" href="forgot-password.html">¿Olvidaste la contraseña?</a>
                   </div>
                   <div class="text-center">
-                    <a class="small" href="usuario-formulario.php">Registrarse</a>
+                    <a class="small" href="usuario-formulario-login.php">Registrarse</a>
                   </div>
                 </div>
               </div>

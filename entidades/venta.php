@@ -125,7 +125,7 @@ class Venta {
             FROM ventas A
             INNER JOIN clientes B ON A.fk_idcliente = B.idcliente
             INNER JOIN productos C ON A.fk_idproducto = C.idproducto
-            ORDER BY A.idventa ASC";
+            ORDER BY A.idventa DESC";
         if($resultado = $mysqli->query($sql)) {
             while($fila = $resultado->fetch_assoc()) {
                 $obj = new Venta();
