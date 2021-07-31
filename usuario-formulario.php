@@ -16,19 +16,19 @@ if($_POST) {
         $usuario->cargarFormulario($_REQUEST);
         if(isset($_GET["id"]) && $_GET["id"] > 0) {
             $usuario->actualizar();
-            header("Location: usuarios.php");
+            header("Location: usuarios.php?msj=actualizar");
         } else {
             if($_REQUEST["txtClave"] === $_REQUEST["txtVerificarClave"]) {
                 $usuario->insertar();
-                header("Location: usuarios.php");
+                header("Location: usuarios.php?msj=insertar");
             } else {
-                $mensajeFalse = "¡Las contraseñas deben ser las mismas!";
+                $error = "¡Las contraseñas deben ser las mismas!";
             }
         }
     } else if(isset($_POST["btnBorrar"])) {
         if(isset($_GET["id"]) && $_GET["id"] > 0) {
             $usuario->eliminar();
-            header("Location: usuarios.php");
+            header("Location: usuarios.php?msj=eliminar");
         }
     }
 }
@@ -49,9 +49,6 @@ include_once "header.php";
                 <?php else: ?>
                     <a href="usuario-formulario.php" class="btn btn-danger mr-2"><i class="fas fa-trash-alt"></i> Limpiar</a>
                 <?php endif;?>
-                <?php if(isset($mensaje)): ?>
-                    <small class="alert alert-success" role="alert"><?php echo $mensaje; ?></small>
-                <?php endif; ?>
             </div>
         </div>
         <div class="row">
@@ -82,15 +79,15 @@ include_once "header.php";
                 <div class="col-6 form-group">
                     <label for="txtClave">Clave:</label>
                     <input type="password" id="txtClave" name="txtClave" class="form-control" value="" required>
-                    <?php if(isset($mensajeFalse)): ?>
-                        <br><small class="alert alert-danger my-3" role="alert"><?php echo $mensajeFalse; ?></small>
+                    <?php if(isset($error)): ?>
+                        <br><small class="alert alert-danger my-3" role="alert"><?php echo $error; ?></small>
                     <?php endif; ?>
                 </div>
                 <div class="col-6 form-group">
                     <label for="txtVerificarClave">Verificar Clave:</label>
                     <input type="password" id="txtVerificarClave" name="txtVerificarClave" class="form-control" value="" required>
-                    <?php if(isset($mensajeFalse)): ?>
-                        <br><small class="alert alert-danger my-3" role="alert"><?php echo $mensajeFalse; ?></small>
+                    <?php if(isset($error)): ?>
+                        <br><small class="alert alert-danger my-3" role="alert"><?php echo $error; ?></small>
                     <?php endif; ?>
                 </div>
             <?php endif; ?>

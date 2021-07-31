@@ -80,6 +80,20 @@ class Producto {
         $mysqli->close();
     }
 
+    public function actualizarStock($cantidadVendida) {
+        $mysqli = new mysqli(Config::BBDD_HOST, Config::BBDD_USUARIO, Config::BBDD_CLAVE, Config::BBDD_NOMBRE);
+        $sql = "UPDATE productos SET "
+            . "cantidad = " . $cantidadVendida . " "
+            . "WHERE idproducto = " . $this->idproducto;
+        if($mysqli->query($sql)) {
+            $mensaje = "¡Se ha actualizado exitosamente el registro!";
+        } else {
+            printf("Error en query: %s\n", $mysqli->error . " " . $sql);
+        }
+        $mysqli->close();
+        return $mensaje;
+    }
+
     public function eliminar() {
         $mysqli = new mysqli(Config::BBDD_HOST, Config::BBDD_USUARIO, Config::BBDD_CLAVE, Config::BBDD_NOMBRE);
         $sql = "DELETE FROM productos WHERE idproducto = " . $this->idproducto;

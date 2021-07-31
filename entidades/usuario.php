@@ -53,10 +53,10 @@ class Usuario {
     public function actualizar(){
         $mysqli = new mysqli(Config::BBDD_HOST, Config::BBDD_USUARIO, Config::BBDD_CLAVE, Config::BBDD_NOMBRE);
         $sql = "UPDATE usuarios SET "
-            . "usuario = '" . $this->usuario . "', '"
-            . "clave = '" . $this->clave . "', '"
-            . "nombre = '" . $this->nombre . "', '"
-            . "apellido = '" . $this->apellido . "', '"
+            . "usuario = '" . $this->usuario . "', "
+            . "clave = '" . $this->clave . "', "
+            . "nombre = '" . $this->nombre . "', "
+            . "apellido = '" . $this->apellido . "', "
             . "correo = '" . $this->correo . "' "
             . "WHERE idusuario = " . $this->idusuario;
         if (!$mysqli->query($sql)) {

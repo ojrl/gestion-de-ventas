@@ -61,7 +61,7 @@ class Cliente {
             telefono = '" . $this->telefono . "',
             correo = '" . $this->correo . "',
             fecha_nac =  '" . $this->fecha_nac . "'
-        WHERE idcliente = " . $this->idcliente;
+            WHERE idcliente = " . $this->idcliente;
         if($mysqli->query($sql)) {
             echo "<script>alert('¡Se han actualizado los datos del cliente exitosamente!')</script>";
         } else {

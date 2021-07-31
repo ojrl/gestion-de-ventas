@@ -19,7 +19,6 @@ if(isset($_GET["id"]) && $_GET["id"] > 0) {
 }
 
 if(isset($_GET["do"]) && $_GET["do"] == "buscarProducto") {
-    $producto = new Producto();
     $producto->idproducto = $_GET["idProducto"];
     $producto->obtenerPorId();
     $resultado["precio"] = $producto->precio;
@@ -32,15 +31,18 @@ if($_POST) {
         $venta->cargarFormulario($_REQUEST);
         if(isset($_GET["id"]) && $_GET["id"] > 0) {
             $venta->actualizar();
-            header("Location: ventas.php");
+            header("Location: ventas.php?msj=actualizar");
         } else {
+            $producto->idproducto = $venta->fk_idproducto;
+            $producto->obtenerPorId();
+            $producto->actualizarStock($producto->cantidad - $venta->cantidad);
             $venta->insertar();
-            $mensaje = "¡Se ha registrado la venta exitosamente!";
+            header("Location: ventas.php?msj=insertar");
         }
     } else if(isset($_POST["btnBorrar"])) {
         if(isset($_GET["id"]) && $_GET["id"] > 0) {
             $venta->eliminar();
-            header("Location: ventas.php");
+            header("Location: ventas.php?msj=eliminar");
         }
     }
 }
@@ -60,7 +62,7 @@ window.onload = function() {
             data: { idProducto: producto },
             async: true,
             dataType: "json",
-            success: function (respuesta) {
+            success: function(respuesta) {
                 strResultado = Intl.NumberFormat("es-AR", {style: 'currency', currency: 'ARS'}).format(respuesta.precio);
                 $("#txtPrecioMoneda").val(strResultado);
                 $("#txtPrecio").val(respuesta.precio);
@@ -89,9 +91,6 @@ window.onload = function() {
                 <?php else: ?>
                     <a href="venta-formulario.php" class="btn btn-danger mr-2"><i class="fas fa-trash-alt"></i> Limpiar</a>
                 <?php endif;?>
-                <?php if(isset($mensaje)): ?>
-                    <small class="alert alert-success" role="alert"><?php echo $mensaje; ?></small>
-                <?php endif; ?>
             </div>
         </div>
         <div class="row">
